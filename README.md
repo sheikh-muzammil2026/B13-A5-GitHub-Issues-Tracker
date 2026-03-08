@@ -1,5 +1,5 @@
 ---
-> # Answer to the five questions
+> # Answers to five questions
 ---
 
 # 1️⃣ What is the difference between var, let, and const?

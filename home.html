@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>GitHub Issues Tracker</title>
+
+  <!-- tailwind and daisyui cdn link -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- google font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+  *{
+       font-family: "Geist", sans-serif;
+  }
+
+    .issue-card{
+    background-color: white ;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 2px 2px 5px gray;
+   
+    
+  }
+
+  .border-purple{
+   border-top: 4px solid #A855F7;
+  }
+  .border-green{
+    border-top: 4px solid #00A96E;
+  }
+
+</style>
+  
+</head>
+
+<body >
+ 
+<nav class="navbar">
+ <div class="navbar grid bg-base-100 shadow-sm grid-col gap-4 sm:flex sm:justify-between px-4">
+   
+  <!-- left logo -->
+   <div class="flex items-center justify-center gap-2">
+    <img src="./assets/image/github-logo.png" class="max-w-9 min-h-9">
+    <h2 class="font-bold">GitHub Issues Tracker</h2>
+  </div>
+   
+   <!-- search bar -->
+  <div class="flex gap-2">
+    <label class="input">
+      <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2.5"
+      fill="none"
+      stroke="currentColor"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </g>
+  </svg>
+  <input type="search" required placeholder="Search Issues" />
+</label>
+    
+    <!-- right search btn -->
+    <button class="btn btn-primary">+ New Issue</button>
+  </div>
+</div>
+</nav>
+
+<main class="container sm:max-w-7xl mx-auto px-4 bg-base-200">
+  
+<!-- all tab-->
+<section>
+    <!-- name of each tab group should be unique -->
+<div class="tabs tabs-box">
+  <input type="radio" name="my_tabs_6" class="tab" aria-label="All" checked="checked" />
+  
+  <div  class="tab-content bg-base-100 border-base-300 p-6 ">
+    <!-- count-bar -->
+    <div  class="count-bar shadow-sm grid grid-cols-1 items-center justify-center text-center sm:text-start gap-2 sm:flex sm:justify-between p-2 mb-2">
+      <div class="flex flex-col items-center gap-2 sm:flex-row sm:items-start">
+      <img class="max-w-[50px] min-h-[50px]" src="./assets/image/Count-Status.png">
+      <div class="">
+        <h2  class="font-semibold"><span id="allTabCount">0</span> Issues</h2>
+      	<p>Track and manage your project issues</p>
+      </div>
+    </div>
+    <div class="flex gap-2 items-center justify-center">
+      <p class="flex items-center justify-center gap-1"><span aria-label="status" class="status status-success bg-[#00A96E] status-lg"></span>Open</p>
+      <p class="flex items-center justify-center gap-1"><span aria-label="status" class="status status-primary bg-[#A855F7] status-lg"></span>Closed</p>
+     </div>
+    </div>
+
+<div id="all-tab-content" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+  <!-- loading-spinner -->
+  <div id="loading-spinner" class="flex justify-center items-center hidden">
+  <span class="loading loading-dots loading-xl "></span>
+  </div>
+    <!-- open-card -->
+<!-- <div onclick="my_modal_4.showModal()" class="issue-card border-green">
+<div>
+    <div class="flex justify-between">
+      <img src="./assets/image/Open-Status.png" alt="" class="status-img">
+      <p id="priority" class="bg-[#FEECEC] text-red-500 rounded-full px-3">High</p>
+    </div>
+    <h2 id="title" class="font-semibold text-4">Fix navigation menu on mobile devices</h2>
+    <p id="description" class="line-clamp-2">The navigation menu doesn't collapse properly on mobile devices...Fix navigation menu on mobile devices</p>
+    <div id="labels" class="flex gap-2">
+      <p class="bg-[#FEECEC] text-red-500 rounded-full px-2">bug</p>
+      <p class="bg-[#FFF8DB] text-orange-500 rounded-full px-4">help wanted</p>
+    </div>
+    <div class="flex flex-col gap-4">
+      <p id="author"><span>#1 by </span>bulk_barry</p
+      <p id="createdAt">2024-01-15</p>
+  </div>
+</div>
+</div> -->
+</div>
+ 
+  </div>
+
+  
+<!-- open-tab -->
+  <input type="radio" name="my_tabs_6" class="tab" aria-label="Open"  />
+  <div class="tab-content bg-base-100 border-base-300 p-6">
+    
+    <!-- count-bar -->
+    <div class="count-bar shadow-sm grid grid-cols-1 items-center justify-center text-center sm:text-start gap-2 sm:flex sm:justify-between p-2">
+      <div class="flex flex-col items-center gap-2 sm:flex-row sm:items-start">
+      <img class="max-w-[50px] min-h-[50px]" src="./assets/image/Count-Status.png">
+      <div class="">
+        <h2 class="font-semibold"><span id="openTabCount">0</span> Issues</h2>
+    	<p>Track and manage your project issues</p>
+      </div>
+    </div>
+    <div class="flex gap-2 items-center justify-center">
+      <p class="flex items-center justify-center gap-1 "><span aria-label="status" class="status status-success bg-[#00A96E] status-lg"></span>Open</p>
+      <p class="flex items-center justify-center gap-1 "><span aria-label="status" class="status status-primary bg-[#A855F7] status-lg"></span>Closed</p>
+     </div>
+    </div>
+ <div id="open-tab-content" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">   
+    <!-- open-card -->
+  <!-- loading-spinner -->
+  <span id="loading-spinner" class="loading loading-dots loading-xl flex hidden"></span>
+    
+<!-- <div class="issue-card border-green max-w-96 mt-5">
+
+    <div class="flex justify-between">
+      <img src="./assets/image/Open-Status.png" alt="" class="status-img">
+      <p id="priority" class="bg-[#FFF8DB] text-orange-500 rounded-full px-3">Medium</p>
+    </div>
+    <h2 id="title" class="font-semibold text-4">Fix navigation menu on mobile devices</h2>
+    <p id="description" class="line-clamp-2">The navigation menu doesn't collapse properly on mobile devices...Fix navigation menu on mobile devices</p>
+    <div id="labels" class="flex gap-2">
+      <p class="bg-[#FEECEC] text-red-500 rounded-full px-2">bug</p>
+      <p class="bg-[#FFF8DB] text-orange-500 rounded-full px-4">help wanted</p>
+    </div>
+    <div class="flex flex-col gap-4">
+      <p id="author"><span>#1 by </span>bulk_barry</p
+      <p id="createdAt">2024-01-15</p>
+  </div>
+</div> -->
+ </div>
+  </div>
+
+
+  <!-- closed-tab -->
+  <input type="radio" name="my_tabs_6" class="tab" aria-label="Closed" />
+  
+  <div class="tab-content bg-base-100 border-base-300 p-6">
+
+<!-- count-bar -->
+    <div class="count-bar shadow-sm grid grid-cols-1 items-center justify-center text-center sm:text-start gap-2 sm:flex sm:justify-between p-2">
+      <div class="flex flex-col items-center gap-2 sm:flex-row sm:items-start">
+      <img class="max-w-[50px] min-h-[50px]" src="./assets/image/Count-Status.png">
+      <div class="">
+        <h2 class="font-semibold"><span id="closedTabCount">0</span> Issues</h2>
+      	<p>Track and manage your project issues</p>
+      </div>
+    </div>
+    <div class="flex gap-2 items-center justify-center">
+      <p class="flex items-center justify-center gap-1"><span aria-label="status" class="status status-success bg-[#00A96E] status-lg"></span>Open</p>
+      <p class="flex items-center justify-center gap-1 "><span aria-label="status" class="status status-primary bg-[#A855F7] status-lg"></span>Closed</p>
+     </div>
+    </div>
+
+    <div id="closed-tab-content" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    <!-- closed-card -->
+<!-- <div class="issue-card border-green max-w-96 mt-5">
+
+    <div class="flex justify-between">
+      <img src="./assets/image/Closed-Status.png" alt="" class="status-img">
+      <p id="priority" class="bg-base-200 rounded-full px-3">LOW</p>
+    </div>
+    <h2 id="title" class="font-semibold text-4">Fix navigation menu on mobile devices</h2>
+    <p id="description" class="line-clamp-2">The navigation menu doesn't collapse properly on mobile devices...Fix navigation menu on mobile devices</p>
+    <div id="labels" class="flex gap-2">
+      <p class="bg-[#FEECEC] text-red-500 rounded-full px-2">bug</p>
+      <p class="bg-[#FFF8DB] text-orange-500 rounded-full px-4">help wanted</p>
+    </div>
+    <div class="flex flex-col gap-4">
+      <p id="author"><span>#1 by </span>bulk_barry</p
+      <p id="createdAt">2024-01-15</p>
+  </div>
+</div> -->
+    </div>
+
+    
+  </div>
+</div>
+</section>
+
+  <!-- modal -->
+<!-- You can open the modal using ID.showModal() method -->
+<!-- <button class="btn" onclick="my_modal_4.showModal()">open modal</button> -->
+<dialog id="my_modal_4" class="modal">
+  <div class="modal-box w-11/12 ">
+    
+<div class="flex flex-col gap-2">
+    
+    <h2 id="title" class="font-semibold text-4">Fix navigation menu on mobile devices</h2>
+    <div class="flex flex-col sm:gap-2 sm:flex-row">
+      <span class="badge badge-success">Opened</span>
+      <p id="author"><span>• by </span>bulk_barry</p>
+      <p id="createdAt">• 2024-01-15</p>
+  </div>
+  <div id="labels" class="flex gap-2">
+      <p class="bg-[#FEECEC] text-red-500 rounded-full px-2">bug</p>
+      <p class="bg-[#FFF8DB] text-orange-500 rounded-full px-4">help wanted</p>
+    </div>
+  <p id="description" class="line-clamp-2">The navigation menu doesn't collapse properly on mobile devices...Fix navigation menu on mobile devices</p>
+  
+  <div class="bg-base-200 flex justify-around py-4">
+    <div>
+      <p class="opacity-50">assignee:</p>
+      <p>bulk_barry</p>
+    </div>
+  <div>
+      <p class="opacity-50">priority:</p>
+      <p id="priority" class="bg-[#FEECEC] text-red-500 rounded-full px-3">High</p>
+    </div>
+  </div>
+</div>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button, it will close the modal -->
+        <button class="btn btn-primary">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+    
+  </main>
+<script src="./assets/script/login.js"></script>
+<script src="./assets/script/machin.js"></script>
+<script src="./assets/script/home.js"></script>
+</body>
+
+</html>

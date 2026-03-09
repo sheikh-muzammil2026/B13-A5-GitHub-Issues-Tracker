@@ -1,13 +1,12 @@
-// Button click
-// ↓
-// API fetch
-// ↓
-// data loop
-// ↓
-// DOM create
-// ↓
-// container append
- 
+
+// ================================
+// 1️⃣ Global DOM Elements
+// ================================
+
+const btnSearch = document.getElementById("btn-search");
+const searchInput = document.getElementById("searchInput");
+
+let allIssues = [];
 
 const allTabContent = document.getElementById("all-tab-content");
 const openTabContent = document.getElementById("open-tab-content");
@@ -30,19 +29,11 @@ const modalLabel2 = document.getElementById("label2");
 const modalCreatedAt = document.getElementById("createdAt");
 const modalBadge = document.getElementById("badge");
 
-const searchText = document.getElementById("searchInput").value;
-const btnSearch = document.getElementById("btn-search");
 
-btnSearch.addEventListener("click", function () {
-  loadSearchData(searchText);
-})
 
-async function loadSearchData(text){
-  const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`);
-  const issues = await res.json();
-  const data = issues.data;
-  displaySearchIssues();
-}
+// ================================
+// 4️⃣ Load All Issues from API
+// ================================
 
 async function loadAllIssues() {
   showLoading();
@@ -54,11 +45,24 @@ async function loadAllIssues() {
   hideLoading();
 };
 
+
+
+// ================================
+// 5️⃣ Display Issues in Tabs
+// ================================
+
 function displayAllIssues(param) {
 
+  // 🔹 Clear old content
+  allTabContent.innerHTML = "";
+  openTabContent.innerHTML = "";
+  closedTabContent.innerHTML = "";
 
+  // 🔹 Loop through each issue
   param.data.forEach(data =>{
-  
+
+
+  // 🔹 Create dynamic div for issue
   const div = document.createElement("div");
   div.addEventListener("click", function () {
       openModal(data.id); 
@@ -72,7 +76,8 @@ function displayAllIssues(param) {
 //  div.onclick = openModal(data.id);
   div.className = `issue-card ${borderClass}`;
   div.id = data.id;
- 
+
+     // 🔹 Set inner HTML of card
   div.innerHTML = `
   <div class="flex justify-between">
       <img src="${statusImg}" alt="" id="status-img">
@@ -122,11 +127,9 @@ updateCounts(closedTabContent, closedTabCounts);
 
 };
 
-// div.addEventListener("click", function () {
-//        cardModal.showModal();
-//      });
 
 
+// 6️⃣ Open Modal with Issue Details
 
 async function openModal(cardId) {
   
@@ -151,19 +154,107 @@ modalCreatedAt.innerText = data.createdAt;
 modalBadge.innerText = data.status;
 
   
-  
+  // 🔹 Show modal
 cardModal.showModal();
 }
 
-loadAllIssues();
-oadSearchData();
 
-// 1️⃣ User clicks a card
-// 2️⃣ Card ID is sent to a function
-// 3️⃣ Function constructs API URL with ID
-// 4️⃣ Fetch API data for that specific issue
-// 5️⃣ Receive JSON data
-// 6️⃣ Create a dynamic div with issue details
-// 7️⃣ Append div inside a modal container
-// 8️⃣ Show modal to the user
-// 9️⃣ User can close modal with a button
+
+
+
+
+
+// 7️⃣ Search Functionality
+
+// ===== Search Button Click =====
+btnSearch.addEventListener("click", function () {
+  const searchText = searchInput.value.trim();
+  if (searchText) {
+    loadSearchData(searchText);
+  }
+});
+
+
+
+// ===== Fetch & Load Search Data =====
+async function loadSearchData(text) {
+  showLoading();
+  
+    const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`);
+    const issues = await res.json();
+    allIssues = issues.data || [];
+    displaySearchIssues(allIssues);
+
+    
+    hideLoading();
+  }
+
+
+// ===== Display Issues Function =====
+function displaySearchIssues(data) {
+  // Clear previous content
+  allTabContent.innerHTML = "";
+  openTabContent.innerHTML = "";
+  closedTabContent.innerHTML = "";
+
+  data.forEach(issue => {
+    // Create card
+    const div = document.createElement("div");
+    div.className = `issue-card ${issue.status === "open" ? "border-green" : "border-purple"}`;
+    div.id = issue.id;
+
+  const statusImg = issue.status === "open" ? "./assets/image/Open-Status.png" : "./assets/image/Closed-Status.png";
+    const priorityClass = issue.priority === "low"
+      ? "bg-base-300 text-gray-500"
+      : issue.priority === "medium"
+      ? "bg-[#FFF8DB] text-orange-500"
+      : "bg-[#FEECEC] text-red-500";
+    const label2Class = issue.labels[1] ? "flex" : "hidden";
+
+    div.innerHTML = `
+      <div class="flex justify-between">
+        <img src="${statusImg}" alt="" id="status-img">
+        <p class="${priorityClass} rounded-full px-3">${issue.priority}</p>
+      </div>
+      <h2 class="font-semibold text-4">${issue.title}</h2>
+      <p class="line-clamp-2">${issue.description}</p>
+      <div class="flex gap-2">
+        <p class="bg-[#FEECEC] text-red-500 rounded-md">${issue.labels[0]}</p>
+        <p class="bg-[#FFF8DB] text-orange-500 rounded-md ${label2Class}">${issue.labels[1] || ""}</p>
+      </div>
+      <div class="flex flex-col gap-4">
+        <p><span>#1 by </span>${issue.author}</p>
+        <p>${issue.createdAt}</p>
+      </div>
+    `;
+
+    // Click to open modal
+    div.addEventListener("click", () => openModal(issue.id));
+
+    // Append to main tab
+    allTabContent.appendChild(div);
+
+    // Clone for open/closed tabs
+    const clone = div.cloneNode(true);
+    clone.addEventListener("click", () => openModal(issue.id));
+    if (issue.status === "open") {
+      openTabContent.appendChild(clone);
+    } else {
+      closedTabContent.appendChild(clone);
+    }
+  });
+
+  // Update counts
+updateCounts(allTabContent, allTabCounts);
+updateCounts(openTabContent, openTabCounts);
+updateCounts(closedTabContent, closedTabCounts);
+
+}
+
+
+
+// ================================
+// 8️⃣ Initial Load
+// ================================
+loadAllIssues();
+

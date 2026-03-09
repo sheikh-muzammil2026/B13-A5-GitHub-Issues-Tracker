@@ -4,7 +4,7 @@ e.preventDefault();
   const pass = document.getElementById("pass").value;
   if(userName === "admin" && pass === "admin123"){
     alert("Login successful.");
-    window.location.assign("../../home.html");
+    window.location.assign("./home.html");
    // window.location.href = "../../home.html";
   }else {
     alert("Credential error, try again.")

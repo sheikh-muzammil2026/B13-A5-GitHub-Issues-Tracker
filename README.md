@@ -130,7 +130,8 @@ An arrow function is a shorter and modern way to write functions in JavaScript.
 
 **Normal Function**
 
-```function add(a,b){
+```
+function add(a,b){
  return a + b;
 }
 ```

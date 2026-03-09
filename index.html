@@ -19,7 +19,7 @@
     
 <style>
   *{
-      font-family: "Outfit", sans-serif;
+      font-family: "Geist", sans-serif;
   }
 </style>
   
@@ -27,29 +27,41 @@
 
 <body>
  
-<form class="login-form bg-base-200 py-16">
+<section class="login-form  bg-slate-50 py-16">
   
-  <div class="form-container flex items-center justify-center flex-col gap-4 bg-white shadow-sm max-w-lg mx-auto py-8 px-6">
-    
+  <!-- form container-->
+  <form class="form-container flex items-center justify-center flex-col gap-4 bg-white shadow-sm max-w-md mx-auto py-8 px-6">
+   
+    <!-- form content -->
   <div  class="flex items-center justify-center flex-col gap-4 text-center">
-   <img class="max-w-16" src="./assets/image/github-logo.png" alt="">
+   <img class="max-w-[60px]" src="./assets/image/github-logo.png" alt="">
     <div>
       <h2 class="font-semibold">GitHub Issues Tracker</h2>
        <p>Sign in to manage your issues</p>
     </div>
   </div>
-  <fieldset class="fieldset border-base-300 rounded-box ">
+
+    <!-- input field -->
+  <fieldset class="fieldset border-base-300 rounded-box w-full ">
   
   <label class="label font-semibold">Username</label>
-  <input id="userName" type="text" class="input" placeholder="Enter Username" />
+  <input id="userName" type="text" class="input w-full" placeholder="Enter Username" />
 
   <label class="label font-semibold">Password</label>
-  <input id="pass" type="password" class="input" placeholder="Enter Password" />
+  <input id="pass" type="password" class="input w-full" placeholder="Enter Password" />
 
   <button type="button" id="btn-login" class="btn btn-primary mt-4">Login</button>
 </fieldset>
+    <div class="divider">OR</div>
+     <!-- Credentials field -->
+    <p>Demo Credentials:</p>
+    <div class="text-sm bg-[#F8FAFC] text-center py-6 w-full">
+      <p>Username: admin</p>
+      <p>Password: admin123</p>
   </div>
-</form>
+
+  </form>
+</section>
 <script src="./login.js"></script>
 </body>
 

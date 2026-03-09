@@ -72,7 +72,11 @@ function displayAllIssues(param) {
   const statusImg = data.status === "open" ? "./assets/image/Open-Status.png" : "./assets/image/Closed-Status.png";
   const priorityClass = data.priority === "low"?  "bg-base-300 text-gray-500" : data.priority === "medium"? "bg-[#FFF8DB] text-orange-500" : "bg-[#FEECEC] text-red-500";
   const label2Class = data.labels[1] ? "flex" : "hidden";
-    
+
+
+  const date = new Date(data.createdAt);
+
+
 //  div.onclick = openModal(data.id);
   div.className = `issue-card ${borderClass}`;
   div.id = data.id;
@@ -81,17 +85,19 @@ function displayAllIssues(param) {
   div.innerHTML = `
   <div class="flex justify-between">
       <img src="${statusImg}" alt="" id="status-img">
-      <p  class="${priorityClass} rounded-full px-3">${data.priority}</p>
+      <p  class="${priorityClass} rounded-full px-3">${data.priority.toUpperCase()}</p>
     </div>
     <h2   class="font-semibold text-4">${data.title}</h2>
     <p class="line-clamp-2">${data.description}</p>
     <div  class="flex gap-2">
       <p  class="bg-[#FEECEC] text-red-500 rounded-md ">${data.labels[0]}</p>
       <p  class="bg-[#FFF8DB] text-orange-500 rounded-md ${label2Class} ">${data.labels[1]}</p>
+    
     </div>
-    <div class="flex flex-col gap-4">
-      <p ><span>#1 by </span>${data.author}</p>
-      <p >${data.createdAt}</p>
+    <div class="divider my-0"></div>
+   <div class="flex flex-col gap-4">
+      <p ><span>#1 by </span>${data.author.toUpperCase()}</p>
+      <p >${date.toLocaleDateString()}</p>
   </div>
   `
   
@@ -138,19 +144,31 @@ async function openModal(cardId) {
   const data = issues.data;
 
 
-const priorityClass = data.priority === "low"?  "bg-base-300 text-gray-500" : data.priority === "medium"? "bg-[#FFF8DB] text-orange-500" : "bg-[#FEECEC] text-red-500";
+const priorityClass = data.priority === "low"?  "bg-base-300 text-gray-500" : data.priority === "medium"? "bg-[#FFF8DB] text-orange-500" : "bg-red-500 text-white";
 const label2Class = data.labels[1] ? "flex" : "hidden";
+const date = new Date(data.createdAt);
 
+  
 modalTitle.innerText = data.title;
-modalAuthor.innerText = data.author;
-modalPriority.innerText = data.priority;
-// modalPriority.classList.add(...priorityClass.split(" "));
-modalAssignee.innerText = data.assignee;
+
+const author = data.status === "open"? `Opened by • ${data.author.toUpperCase()} •` :  `Closed by • ${data.author.toUpperCase()} •`;
+modalAuthor.innerText = author;
+  
+modalPriority.innerText = data.priority.toUpperCase();
+modalPriority.className = ""; // সব ক্লাস মুছে দাও
+modalPriority.classList.add(...priorityClass.split(" "));
+  
+modalAssignee.innerText = data.assignee.toUpperCase();
 modalDescription.innerText = data.description;
+  
 modalLabel1.innerText = data.labels[0];
+// modalLabel2.innerText = `${data.labels[1] || ""}`;
 modalLabel2.innerText = data.labels[1];
-// modalLabel2.classList.add(...priorityClass.split(" "));
-modalCreatedAt.innerText = data.createdAt;
+// modalLabel2.classList.add(label2Class);
+modalLabel2.classList.remove("flex", "hidden");
+modalLabel2.classList.add(label2Class);
+
+modalCreatedAt.innerText = date.toLocaleDateString();
 modalBadge.innerText = data.status;
 
   
@@ -168,7 +186,7 @@ cardModal.showModal();
 
 // ===== Search Button Click =====
 btnSearch.addEventListener("click", function () {
-  const searchText = searchInput.value.trim();
+  const searchText = searchInput.value.trim().toLowerCase();
   if (searchText) {
     loadSearchData(searchText);
   }
@@ -211,20 +229,22 @@ function displaySearchIssues(data) {
       : "bg-[#FEECEC] text-red-500";
     const label2Class = issue.labels[1] ? "flex" : "hidden";
 
+    const date = new Date(issue.createdAt);
+
     div.innerHTML = `
       <div class="flex justify-between">
         <img src="${statusImg}" alt="" id="status-img">
-        <p class="${priorityClass} rounded-full px-3">${issue.priority}</p>
+        <p class="${priorityClass} rounded-full px-3">${issue.priority.toUpperCase()}</p>
       </div>
-      <h2 class="font-semibold text-4">${issue.title}</h2>
+      <h2 class="font-semibold">${issue.title}</h2>
       <p class="line-clamp-2">${issue.description}</p>
       <div class="flex gap-2">
         <p class="bg-[#FEECEC] text-red-500 rounded-md">${issue.labels[0]}</p>
         <p class="bg-[#FFF8DB] text-orange-500 rounded-md ${label2Class}">${issue.labels[1] || ""}</p>
       </div>
       <div class="flex flex-col gap-4">
-        <p><span>#1 by </span>${issue.author}</p>
-        <p>${issue.createdAt}</p>
+        <p><span>#1 by </span>${issue.author.toUpperCase()}</p>
+        <p>${date.toLocaleDateString()}</p>
       </div>
     `;
 
